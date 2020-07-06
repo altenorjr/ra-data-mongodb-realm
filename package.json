@@ -1,0 +1,20 @@
+{
+  "name": "ra-data-mongodb-realm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://altenorjr:zkIJ6yK7@github.com/altenorjr/ra-data-mongodb-realm.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/altenorjr/ra-data-mongodb-realm/issues"
+  },
+  "homepage": "https://github.com/altenorjr/ra-data-mongodb-realm#readme"
+}
