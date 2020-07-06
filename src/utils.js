@@ -1,7 +1,9 @@
-import * as Realm from "realm-web";
 import bson from "bson";
-import _ from "lodash";
-import { parse } from "path";
+import get from "lodash.get";
+import set from "lodash.set";
+import unset from "lodash.unset";
+
+const _ = { get, set, unset };
 
 export const oid = (id) => new bson.ObjectID(id);
 

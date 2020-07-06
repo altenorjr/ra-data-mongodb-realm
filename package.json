@@ -16,5 +16,12 @@
   "bugs": {
     "url": "https://github.com/altenorjr/ra-data-mongodb-realm/issues"
   },
-  "homepage": "https://github.com/altenorjr/ra-data-mongodb-realm#readme"
+  "homepage": "https://github.com/altenorjr/ra-data-mongodb-realm#readme",
+  "dependencies": {
+    "bson": "^4.0.4",
+    "lodash.get": "^4.4.2",
+    "lodash.set": "^4.3.2",
+    "lodash.unset": "^4.5.2",
+    "realm-web": "^0.6.0"
+  }
 }
