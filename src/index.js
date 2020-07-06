@@ -1,8 +1,8 @@
-import { ObjectId } from "bson";
+const { ObjectId } = require("bson");
 
-import { cleanObj, cleanValue } from "./utils";
+const { cleanObj, cleanValue } = require("./utils");
 
-export default ({
+module.exports = ({
   app,
   service,
   db,

@@ -1,13 +1,14 @@
-import bson from "bson";
-import get from "lodash.get";
-import set from "lodash.set";
-import unset from "lodash.unset";
+const bson = require("bson");
+const get = require("lodash.get");
+const set = require("lodash.set");
+const unset = require("lodash.unset");
 
 const _ = { get, set, unset };
 
-export const oid = (id) => new bson.ObjectID(id);
+const oid = (id) => new bson.ObjectID(id);
+module.exports.oid = oid;
 
-export const cleanValue = (value) => {
+const cleanValue = (value) => {
   if (Array.isArray(value)) {
     return cleanArray(value);
   }
@@ -33,8 +34,9 @@ export const cleanValue = (value) => {
 
   return value;
 };
+module.exports.cleanValue = cleanValue;
 
-export const cleanObj = (obj) => {
+const cleanObj = (obj) => {
   return Object.entries(obj)
     .map(([key, value]) => {
       return [key, cleanValue(value)];
@@ -46,11 +48,13 @@ export const cleanObj = (obj) => {
       };
     }, {});
 };
+module.exports.cleanObj = cleanObj;
 
-export const cleanArray = (array) =>
+const cleanArray = (array) =>
   array.map((value) => cleanValue(value));
+module.exports.cleanArray = cleanArray;
 
-export const preparseDocument = (
+const preparseDocument = (
   obj,
   fieldsToParse,
   pathParser = preparsePath
@@ -65,8 +69,9 @@ export const preparseDocument = (
 
   return parsedObj;
 };
+module.exports.preparseDocument = preparseDocument;
 
-export const preparsePath = (obj, path, transformer) => {
+const preparsePath = (obj, path, transformer) => {
   let pathIsInArray = path.includes("$");
   let pathIsArrayElement = path.endsWith("$");
 
@@ -136,3 +141,4 @@ export const preparsePath = (obj, path, transformer) => {
     );
   }
 };
+module.exports.preparsePath = preparsePath;
