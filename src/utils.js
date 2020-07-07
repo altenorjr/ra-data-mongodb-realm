@@ -62,7 +62,7 @@ module.exports.cleanArray = cleanArray;
 
 const preparseDocument = (
   obj,
-  fieldsToParse,
+  fieldsToParse = {},
   pathParser = preparsePath
 ) => {
   let parsedObj = { ...obj };
