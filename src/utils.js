@@ -65,13 +65,17 @@ const preparseDocument = (
   fieldsToParse = {},
   pathParser = preparsePath
 ) => {
+  const entries = Object.entries(fieldsToParse);
+
+  if (entries.length === 0) {
+    return obj;
+  }
+
   let parsedObj = { ...obj };
 
-  Object.entries(fieldsToParse).map(
-    ([path, transformer]) => {
-      parsedObj = pathParser(parsedObj, path, transformer);
-    }
-  );
+  entries.forEach(([path, transformer]) => {
+    parsedObj = pathParser(parsedObj, path, transformer);
+  });
 
   return parsedObj;
 };
