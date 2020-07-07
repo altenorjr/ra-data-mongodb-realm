@@ -10,6 +10,8 @@ import {
 
 export default buildMongoDbRealmDataProvider;
 
+import * as constants from "./src/constants";
+
 export {
   cleanObj,
   cleanArray,
@@ -17,4 +19,5 @@ export {
   preparseDocument,
   preparsePath,
   oid,
+  constants,
 };

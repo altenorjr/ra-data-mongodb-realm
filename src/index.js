@@ -6,6 +6,7 @@ module.exports = ({
   app,
   service,
   db,
+  overrideResourceName = (resource, operation) => resource,
   preparseDocument = (resource, data) => data,
 }) => {
   const Service = app.services.mongodb(service);
@@ -17,7 +18,14 @@ module.exports = ({
       const { page, perPage } = pagination;
       const { field, order } = sort;
 
-      const collection = Db.collection(resource);
+      const overriddenResourceName = overrideResourceName(
+        resource,
+        "getList"
+      );
+
+      const collection = Db.collection(
+        overriddenResourceName
+      );
 
       const filterQuery = {
         $match: filter,
@@ -76,7 +84,14 @@ module.exports = ({
       //   })
       // );
 
-      const collection = Db.collection(resource);
+      const overriddenResourceName = overrideResourceName(
+        resource,
+        "getOne"
+      );
+
+      const collection = Db.collection(
+        overriddenResourceName
+      );
 
       return collection
         .findOne({ _id: new ObjectId(params.id) })
@@ -93,7 +108,6 @@ module.exports = ({
 
       // return Promise.resolve({ data: {} });
     },
-
     getMany: (resource, params) => {
       // const query = {
       //   filter: JSON.stringify({ id: params.ids }),
@@ -101,7 +115,14 @@ module.exports = ({
       // const url = `${apiUrl}/${resource}?${stringify(query)}`;
       // return httpClient(url).then(({ json }) => ({ data: json }));
 
-      const collection = Db.collection(resource);
+      const overriddenResourceName = overrideResourceName(
+        resource,
+        "getMany"
+      );
+
+      const collection = Db.collection(
+        overriddenResourceName
+      );
 
       return collection
         .find({
@@ -115,7 +136,6 @@ module.exports = ({
           }),
         }));
     },
-
     getManyReference: (
       resource,
       { pagination, sort, filter, target, id }
@@ -135,7 +155,14 @@ module.exports = ({
       const { page, perPage } = pagination;
       const { field, order } = sort;
 
-      const collection = Db.collection(resource);
+      const overriddenResourceName = overrideResourceName(
+        resource,
+        "getManyReference"
+      );
+
+      const collection = Db.collection(
+        overriddenResourceName
+      );
 
       const filterQuery = {
         $match: {
@@ -195,16 +222,22 @@ module.exports = ({
 
       // Promise.resolve({ data: [], total: 0 });
     },
-
     update: (resource, { id, data }) => {
       // return httpClient(`${apiUrl}/${resource}/${params.id}`, {
       //   method: "PUT",
       //   body: JSON.stringify(params.data),
       // }).then(({ json }) => ({ data: json }));
 
-      const collection = Db.collection(resource);
-
       const parsed = preparseDocument(resource, data);
+
+      const overriddenResourceName = overrideResourceName(
+        resource,
+        "update"
+      );
+
+      const collection = Db.collection(
+        overriddenResourceName
+      );
 
       return collection
         .updateOne(
@@ -215,11 +248,17 @@ module.exports = ({
 
       // return Promise.resolve({ data: {} });
     },
-
     updateMany: (resource, { ids, data }) => {
-      const collection = Db.collection(resource);
-
       const parsed = preparseDocument(resource, data);
+
+      const overriddenResourceName = overrideResourceName(
+        resource,
+        "updateMany"
+      );
+
+      const collection = Db.collection(
+        overriddenResourceName
+      );
 
       collection
         .updateMany(
@@ -232,11 +271,17 @@ module.exports = ({
 
       return Promise.resolve({ data: [] });
     },
-
     create: (resource, { data }) => {
-      const collection = Db.collection(resource);
-
       const parsed = preparseDocument(resource, data);
+
+      const overriddenResourceName = overrideResourceName(
+        resource,
+        "create"
+      );
+
+      const collection = Db.collection(
+        overriddenResourceName
+      );
 
       return collection
         .insertOne(parsed)
@@ -249,17 +294,29 @@ module.exports = ({
           };
         });
     },
-
     delete: (resource, { id }) => {
-      const collection = Db.collection(resource);
+      const overriddenResourceName = overrideResourceName(
+        resource,
+        "delete"
+      );
+
+      const collection = Db.collection(
+        overriddenResourceName
+      );
 
       return collection
         .deleteOne({ _id: new ObjectId(id) })
         .then((data) => ({ data }));
     },
-
     deleteMany: (resource, { ids }) => {
-      const collection = Db.collection(resource);
+      const overriddenResourceName = overrideResourceName(
+        resource,
+        "deleteMany"
+      );
+
+      const collection = Db.collection(
+        overriddenResourceName
+      );
 
       return collection
         .deleteMany({

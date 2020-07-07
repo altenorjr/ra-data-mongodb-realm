@@ -9,14 +9,20 @@ const oid = (id) => new bson.ObjectID(id);
 module.exports.oid = oid;
 
 const cleanValue = (value) => {
+  if (!value) {
+    return value;
+  }
+
   if (Array.isArray(value)) {
     return cleanArray(value);
   }
 
   if (
     value instanceof bson.ObjectID ||
-    (value.id instanceof Uint8Array &&
-      value._bsontype === "ObjectId")
+    (!!value._bsontype &&
+      value._bsontype === "ObjectId" &&
+      !!value.id &&
+      value.id instanceof Uint8Array)
   ) {
     return value.toString();
   }
