@@ -140,18 +140,6 @@ module.exports = ({
       resource,
       { pagination, sort, filter, target, id }
     ) => {
-      // const { page, perPage } = params.pagination;
-      // const { field, order } = params.sort;
-      // const query = {
-      //   sort: JSON.stringify([field, order]),
-      //   range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
-      //   filter: JSON.stringify({
-      //     ...params.filter,
-      //     [params.target]: params.id,
-      //   }),
-      // };
-      // const url = `${apiUrl}/${resource}?${stringify(query)}`;
-
       const { page, perPage } = pagination;
       const { field, order } = sort;
 
@@ -167,7 +155,7 @@ module.exports = ({
       const filterQuery = {
         $match: {
           ...filter,
-          [target]: new Object(id),
+          [target]: { $oid: id },
         },
       };
 

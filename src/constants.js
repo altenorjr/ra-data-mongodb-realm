@@ -14,6 +14,13 @@ export const ALL_READS = [
   GET_MANY,
   GET_MANY_REFERENCE,
 ];
+
+export const ALL_LISTS = [
+  GET_LIST,
+  GET_MANY,
+  GET_MANY_REFERENCE
+]
+
 export const ALL_WRITES = [
   CREATE,
   UPDATE,
