@@ -130,11 +130,15 @@ module.exports = ({
             $in: params.ids.map((id) => new ObjectId(id)),
           },
         })
-        .then((data) => ({
-          data: data.map(({ _id: id, ...rest }) => {
+        .then((data) => {
+          data = data.map(({ _id: id, ...rest }) => {
             return cleanObj({ id, ...rest });
-          }),
-        }));
+          });
+
+          return {
+            data,
+          };
+        });
     },
     getManyReference: (
       resource,
@@ -277,6 +281,29 @@ module.exports = ({
           return {
             data: {
               id: insertedId.toString(),
+              ...data,
+            },
+          };
+        });
+    },
+    createMany: (resource, { data }) => {
+      const parsed = preparseDocument(resource, data);
+
+      const overriddenResourceName = overrideResourceName(
+        resource,
+        "create"
+      );
+
+      const collection = Db.collection(
+        overriddenResourceName
+      );
+
+      return collection
+        .insertMany(parsed)
+        .then(({ insertedIds }) => {
+          return {
+            data: {
+              ids: insertedIds.map((id) => id.toString()),
               ...data,
             },
           };
