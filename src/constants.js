@@ -18,8 +18,8 @@ export const ALL_READS = [
 export const ALL_LISTS = [
   GET_LIST,
   GET_MANY,
-  GET_MANY_REFERENCE
-]
+  GET_MANY_REFERENCE,
+];
 
 export const ALL_WRITES = [
   CREATE,
@@ -27,4 +27,10 @@ export const ALL_WRITES = [
   UPDATE_MANY,
   DELETE,
   DELETE_MANY,
+];
+
+export const ALL = [
+  ...ALL_READS,
+  ...ALL_LISTS,
+  ...ALL_WRITES,
 ];
