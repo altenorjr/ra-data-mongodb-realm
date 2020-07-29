@@ -14,9 +14,12 @@ module.exports = ({
   const Db = Service.db(db);
 
   return {
-    getList: (resource, { filter, sort, pagination }) => {
-      const { page, perPage } = pagination;
-      const { field, order } = sort;
+    getList: (
+      resource,
+      { filter, sort = {}, pagination = {} }
+    ) => {
+      const { page = 1, perPage = 10 } = pagination || {};
+      const { field = "_id", order = "ASC" } = sort || {};
 
       const overriddenResourceName = overrideResourceName(
         resource,
