@@ -37,6 +37,7 @@ module.exports = ({
         query: filterQuery,
         autoPagination = true,
         autoSorting = true,
+        autoCount = true,
       } = createListQuery(resource, [
         {
           $match: filter,
@@ -76,13 +77,17 @@ module.exports = ({
 
       const countQuery = collection
         .aggregate([
-          filterQuery,
-          {
-            $group: {
-              _id: null,
-              total: { $sum: 1 },
-            },
-          },
+          ...filterQuery,
+          ...(autoCount
+            ? [
+                {
+                  $group: {
+                    _id: null,
+                    total: { $sum: 1 },
+                  },
+                },
+              ]
+            : []),
         ])
         .then(([data]) => {
           return (data || {}).total || 0;
