@@ -8,6 +8,9 @@ module.exports = ({
   db,
   overrideResourceName = (resource, operation) => resource,
   preparseDocument = (resource, data) => data,
+  createListQuery = (resource, defaultQuery) => ({
+    query: defaultQuery,
+  }),
 }) => {
   const Service = app.services.mongodb(service);
 
@@ -30,24 +33,40 @@ module.exports = ({
         overriddenResourceName
       );
 
-      const filterQuery = {
-        $match: filter,
-      };
+      const {
+        query: filterQuery,
+        autoPagination = true,
+        autoSorting = true,
+      } = createListQuery(resource, [
+        {
+          $match: filter,
+        },
+      ]);
+
+      console.log({ filterQuery });
 
       const dataQuery = collection
         .aggregate([
-          filterQuery,
-          {
-            $sort: {
-              [field]: order === "DESC" ? -1 : 1,
-            },
-          },
-          {
-            $skip: (page - 1) * perPage,
-          },
-          {
-            $limit: perPage,
-          },
+          ...filterQuery,
+          ...(autoSorting
+            ? [
+                {
+                  $sort: {
+                    [field]: order === "DESC" ? -1 : 1,
+                  },
+                },
+              ]
+            : []),
+          ...(autoPagination
+            ? [
+                {
+                  $skip: (page - 1) * perPage,
+                },
+                {
+                  $limit: perPage,
+                },
+              ]
+            : []),
         ])
         .then((data) =>
           data.map(({ _id: id, ...rest }) => {

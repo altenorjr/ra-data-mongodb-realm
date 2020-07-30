@@ -152,3 +152,9 @@ const preparsePath = (obj, path, transformer) => {
   }
 };
 module.exports.preparsePath = preparsePath;
+
+module.exports.Db = (app) => {
+  const Service = app.services.mongodb(service);
+
+  return Service.db(db);
+};
