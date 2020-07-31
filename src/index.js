@@ -44,8 +44,6 @@ module.exports = ({
         },
       ]);
 
-      console.log({ filterQuery });
-
       const dataQuery = collection
         .aggregate([
           ...filterQuery,
