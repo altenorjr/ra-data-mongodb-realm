@@ -44,49 +44,53 @@ module.exports = ({
         },
       ]);
 
+      const dataPipeline = [
+        ...filterQuery,
+        ...(autoSorting
+          ? [
+              {
+                $sort: {
+                  [field]: order === "DESC" ? -1 : 1,
+                },
+              },
+            ]
+          : []),
+        ...(autoPagination
+          ? [
+              {
+                $skip: (page - 1) * perPage,
+              },
+              {
+                $limit: perPage,
+              },
+            ]
+          : []),
+      ];
+
       const dataQuery = collection
-        .aggregate([
-          ...filterQuery,
-          ...(autoSorting
-            ? [
-                {
-                  $sort: {
-                    [field]: order === "DESC" ? -1 : 1,
-                  },
-                },
-              ]
-            : []),
-          ...(autoPagination
-            ? [
-                {
-                  $skip: (page - 1) * perPage,
-                },
-                {
-                  $limit: perPage,
-                },
-              ]
-            : []),
-        ])
+        .aggregate(dataPipeline)
         .then((data) =>
           data.map(({ _id: id, ...rest }) => {
             return cleanObj({ id, ...rest });
           })
         );
 
-      const countQuery = collection
-        .aggregate([
-          ...filterQuery,
-          ...(autoCount
-            ? [
-                {
-                  $group: {
-                    _id: null,
-                    total: { $sum: 1 },
-                  },
+      const countPipeline = [
+        ...filterQuery,
+        ...(autoCount
+          ? [
+              {
+                $group: {
+                  _id: null,
+                  total: { $sum: 1 },
                 },
-              ]
-            : []),
-        ])
+              },
+            ]
+          : []),
+      ];
+
+      const countQuery = collection
+        .aggregate(countPipeline)
         .then(([data]) => {
           return (data || {}).total || 0;
         });
