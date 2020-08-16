@@ -50,7 +50,8 @@ module.exports = ({
           ? [
               {
                 $sort: {
-                  [field]: order === "DESC" ? -1 : 1,
+                  [field === "id" ? "_id" : field]:
+                    order === "DESC" ? -1 : 1,
                 },
               },
             ]
