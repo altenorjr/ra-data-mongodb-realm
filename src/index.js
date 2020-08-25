@@ -108,12 +108,6 @@ module.exports = ({
       );
     },
     getOne: (resource, params) => {
-      // return httpClient(`${apiUrl}/${resource}/${params.id}`).then(
-      //   ({ json }) => ({
-      //     data: json,
-      //   })
-      // );
-
       const overriddenResourceName = overrideResourceName(
         resource,
         "getOne"
@@ -128,6 +122,7 @@ module.exports = ({
         .then((result) => {
           if (!result) {
             console.log("RESULT NOT FOUND!!!");
+
             return { data: null };
           }
 
@@ -135,8 +130,6 @@ module.exports = ({
 
           return { data: cleanValue({ id, ...rest }) };
         });
-
-      // return Promise.resolve({ data: {} });
     },
     getMany: (resource, params) => {
       // const query = {
@@ -244,7 +237,7 @@ module.exports = ({
 
       // Promise.resolve({ data: [], total: 0 });
     },
-    update: (resource, { id, data }) => {
+    update: (resource, { id, data, ...options }) => {
       // return httpClient(`${apiUrl}/${resource}/${params.id}`, {
       //   method: "PUT",
       //   body: JSON.stringify(params.data),
@@ -264,7 +257,8 @@ module.exports = ({
       return collection
         .updateOne(
           { _id: new ObjectId(id) },
-          { $set: parsed }
+          { $set: parsed },
+          { ...options }
         )
         .then((data) => ({ data }));
 
