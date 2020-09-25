@@ -117,8 +117,13 @@ module.exports = ({
         overriddenResourceName
       );
 
+      const id =
+        params.id.lenth !== 24
+          ? params.id
+          : new ObjectId(params.id);
+
       return collection
-        .findOne({ _id: new ObjectId(params.id) })
+        .findOne({ _id: id })
         .then((result) => {
           if (!result) {
             console.log("RESULT NOT FOUND!!!");
@@ -238,11 +243,6 @@ module.exports = ({
       // Promise.resolve({ data: [], total: 0 });
     },
     update: (resource, { id, data, ...options }) => {
-      // return httpClient(`${apiUrl}/${resource}/${params.id}`, {
-      //   method: "PUT",
-      //   body: JSON.stringify(params.data),
-      // }).then(({ json }) => ({ data: json }));
-
       const parsed = preparseDocument(resource, data);
 
       const overriddenResourceName = overrideResourceName(
@@ -258,7 +258,7 @@ module.exports = ({
         .updateOne(
           { _id: new ObjectId(id) },
           { $set: parsed },
-          { ...options }
+          options
         )
         .then((data) => ({ data }));
 
