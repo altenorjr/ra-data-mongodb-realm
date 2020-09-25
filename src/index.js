@@ -118,7 +118,7 @@ module.exports = ({
       );
 
       const id =
-        params.id.lenth !== 24
+        params.id.length !== 24
           ? params.id
           : new ObjectId(params.id);
 
