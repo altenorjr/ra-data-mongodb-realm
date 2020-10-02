@@ -98,8 +98,6 @@ module.exports = ({
 
       return Promise.all([dataQuery, countQuery]).then(
         ([data, total] = [[], 0]) => {
-          console.log({ data, total });
-
           return {
             data,
             total,
